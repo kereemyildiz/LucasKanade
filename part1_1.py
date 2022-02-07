@@ -70,7 +70,7 @@ def LucasKanade(i1,i2, threshold):
             motion_vector += np.array([[j],[i]])
             motion_vector = np.int0(motion_vector)
             
-            image = cv2.arrowedLine(image, (j, i), (motion_vector[0][0], motion_vector[1][0]), color=(255,0,0), thickness=2, tipLength=1)
+            image = cv2.arrowedLine(image, (j, i), (motion_vector[0][0], motion_vector[1][0]), color=(255), thickness=2, tipLength=1)
         
     final_frame = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
     images_list.append(final_frame)
