@@ -58,10 +58,15 @@ def LucasKanade(i1,i2, threshold):
 
 
         A = np.array([IX, IY]).T
-        
+        A_T = A.T
+        A1 = A_T @ A
+        A2 = np.linalg.pinv(A1)
+                
         B = np.array([IT]).T
+        B2 = A_T @ B
         
-        motion_vector = np.linalg.pinv((A.T @ A)) @ (A.T @ B)
+        
+        motion_vector = A2 @ B2
         
         if np.linalg.norm(motion_vector) > threshold:
             motion_vector = motion_vector*10
@@ -90,6 +95,7 @@ def file_traverse():
     threshold=1
     
     for file in sorted(glob.glob('*.png'),key=numericalSort):
+        
         if file != '00459.png':
             next_file_name = f'{k:05}.png'
             k += 1
