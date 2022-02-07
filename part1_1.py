@@ -55,8 +55,6 @@ def LucasKanade(i1,i2, threshold):
         IT = ([-It[i - 1, j - 1], -It[i, j - 1], -It[i + 1, j - 1], -It[i - 1, j], -It[i, j], -It[i + 1, j], -It[i - 1, j + 1],
             -It[i, j + 1], -It[i + 1, j + 1]]) 
 
-
-
         A = np.array([IX, IY]).T
         A_T = A.T
         A1 = A_T @ A
@@ -65,14 +63,12 @@ def LucasKanade(i1,i2, threshold):
         B = np.array([IT]).T
         B2 = A_T @ B
         
-        
         motion_vector = A2 @ B2
         
         if np.linalg.norm(motion_vector) > threshold:
             motion_vector = motion_vector*10
             motion_vector += np.array([[j],[i]])
             motion_vector = np.int0(motion_vector)
-            
             
             image = cv2.arrowedLine(image, (j, i), (motion_vector[0][0], motion_vector[1][0]), color=(255,0,0), thickness=2, tipLength=1)
         
@@ -91,16 +87,18 @@ def file_traverse():
     image_dir = parent_dir + '\DJI_0101'
     os.chdir(image_dir)
     print(os.getcwd())
-    k = 1
-    threshold=1
+    k = 0
+    threshold = 1
     
     for file in sorted(glob.glob('*.png'),key=numericalSort):
-        
-        if file != '00459.png':
-            next_file_name = f'{k:05}.png'
+        if int(file.split('.')[0]) == 0:
+            pass
+        else:
+            current_file = f'{k:05}.png'
+            next_file = file
             k += 1
-            i1 = cv2.imread(file)
-            i2 = cv2.imread(next_file_name)
+            i1 = cv2.imread(current_file)
+            i2 = cv2.imread(next_file)
             LucasKanade(i1,i2, threshold)
         
 file_traverse()
